@@ -236,7 +236,7 @@
         <div class="sub">Your finance agreement at a glance</div>
       </div>
       <div class="meta">
-        <div><label>Review date:</label><input type="text" value="12 May 2025"></div>
+        <div><label>Review date:</label><input type="text" id="reviewDate" value="12 May 2025"></div>
         <div><label>Agreement type:</label><input type="text" value="Conditional Sale"></div>
         <div><label>Agreement start date:</label><input type="text" value="13 Nov 2023"></div>
         <div><label>Agreement number:</label><input type="text" value="845052806"></div>
@@ -454,16 +454,25 @@ document.getElementById('settleVal').addEventListener('input', updateEquity);
 document.getElementById('estVal').addEventListener('input', updateEquity);
 updateEquity();
 
+// ---- Review date ----
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function setReviewDateToToday(){
+  const d = new Date();
+  document.getElementById('reviewDate').value = `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+}
+setReviewDateToToday();
+
 // ---- Print / Reset ----
 // Nothing here is ever saved (no localStorage/cookies) — every page load already
 // starts from the sample values below. This also clears the form the moment a
 // print/PDF is done, so one customer's details can't carry over to the next.
 function blankFields(){
   document.querySelectorAll('#sheet input[type=text]').forEach(el => {
-    if (el.id === 'vehModel') return;
+    if (el.id === 'vehModel' || el.id === 'reviewDate') return;
     el.value = '';
   });
   document.getElementById('payCount').value = '';
+  setReviewDateToToday();
   updateEquity();
 }
 
