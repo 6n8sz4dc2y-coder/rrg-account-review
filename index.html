@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Account Review — RRG Group</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --navy:#0F2138;
+    --navy2:#16314F;
+    --teal:#1B7A73;
+    --amber:#C98A2B;
+    --ink:#14202E;
+    --slate:#4B5A6A;
+    --muted:#8695A3;
+    --line:#E2E7EC;
+    --bg:#F5F7F9;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    display:flex; justify-content:center; padding:28px 12px 60px;
+  }
+  #sheet{
+    width:210mm; min-height:297mm; background:#fff; padding:14mm 12mm;
+    box-shadow:0 4px 24px rgba(20,32,46,.12); position:relative;
+  }
+  .toolbar{
+    width:210mm; max-width:100%; margin:0 auto 14px; display:flex; gap:10px;
+    justify-content:flex-end; align-items:center;
+  }
+  .toolbar button{
+    background:var(--navy); color:#fff; border:none; padding:10px 18px;
+    border-radius:6px; font-weight:600; font-size:14px; cursor:pointer;
+  }
+  .toolbar button.secondary{ background:#fff; color:var(--navy); border:1.5px solid var(--navy); }
+  .toolbar button:hover{ opacity:.9; }
+
+  input, select{
+    font-family:inherit; border:1px solid var(--line); background:#FCFCFA;
+    border-radius:4px; padding:3px 6px; font-size:inherit; color:var(--ink);
+  }
+  input:focus, select:focus{ outline:2px solid var(--teal); outline-offset:1px; }
+  input[type=text].bare, input[type=number].bare{
+    width:100%;
+  }
+
+  /* ---------- Header ---------- */
+  .header{ display:flex; margin-bottom:18px; border:1px solid var(--line); border-radius:6px; overflow:hidden;}
+  .logo-block{
+    background:var(--navy); color:#fff; padding:18px 24px 18px 20px; min-width:190px;
+    clip-path: polygon(0 0, 100% 0, 82% 100%, 0% 100%);
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .logo-block .rrg{ font-size:26px; font-weight:800; letter-spacing:.5px; line-height:1; }
+  .logo-block .grp{ font-size:11px; letter-spacing:3px; color:#B9C6D6; margin-top:4px; }
+  .title-block{ flex:1; padding:16px 20px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:14px;}
+  .title-block h1{ font-size:24px; margin:0 0 4px; letter-spacing:.3px; }
+  .title-block .sub{ font-size:12px; color:var(--slate); text-transform:uppercase; letter-spacing:1px; }
+  .meta{ font-size:11.5px; color:var(--slate); }
+  .meta div{ display:flex; gap:8px; margin-bottom:3px; align-items:center; }
+  .meta label{ width:130px; color:var(--muted); }
+  .meta input{ font-weight:600; width:130px; }
+
+  /* ---------- Greeting ---------- */
+  .greet{ font-size:15px; margin:4px 0 10px; }
+  .greet input{ font-weight:700; font-size:15px; width:220px; }
+  .intro{ font-size:12.5px; color:var(--slate); line-height:1.5; margin-bottom:16px; }
+
+  /* ---------- Vehicle card ---------- */
+  .vehicle-card{
+    display:flex; border:1px solid var(--line); border-radius:6px; background:var(--bg);
+    margin-bottom:16px; overflow:hidden;
+  }
+  .veh-visual{ width:44%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px; }
+  .veh-photo{ width:100%; height:130px; display:flex; align-items:center; justify-content:center; }
+  .veh-photo img{ max-width:100%; max-height:100%; object-fit:contain; }
+  .veh-photo .missing{
+    width:100%; height:100%; border:1.5px dashed var(--muted); border-radius:6px;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-size:11px; line-height:1.5; color:var(--muted); padding:8px; background:#FBFCFC;
+  }
+  .veh-photo .missing code{ font-size:10.5px; color:var(--slate); }
+  .veh-select-row{ margin-top:6px; display:flex; gap:6px; align-items:center; }
+  .veh-select-row select{ font-size:12px; padding:4px 6px; }
+  .veh-info{ flex:1; padding:16px 20px; background:#fff; }
+  .veh-info .label{ font-size:11px; letter-spacing:1px; color:var(--teal); font-weight:700; margin-bottom:6px; }
+  .veh-info input{ font-weight:700; font-size:14px; width:100%; margin-bottom:6px; }
+  .veh-info .reg-label{ font-size:11px; color:var(--muted); margin-top:6px; }
+
+  /* ---------- Stat row ---------- */
+  .stat-row{ display:flex; gap:12px; margin-bottom:16px; }
+  .stat{
+    flex:1; border:1px solid var(--line); border-radius:6px; padding:14px 10px;
+    text-align:center; background:#fff; border-top:3px solid var(--accent, var(--navy));
+  }
+  .stat .icon{ margin:0 auto 8px; width:38px; height:38px; }
+  .stat .lbl{ font-size:10.5px; letter-spacing:.5px; color:var(--slate); font-weight:700; margin-bottom:6px; }
+  .stat .val{ font-size:20px; font-weight:800; border:none; background:transparent; text-align:center; width:100%; color:var(--ink); }
+  .stat .sub{ font-size:10.5px; color:var(--muted); margin-top:4px; }
+  .stat.blue{ --accent:#3E7CC9; } .stat.blue .val{ color:#2A5C9B; }
+  .stat.amber{ --accent:var(--amber); } .stat.amber .val{ color:#93691E; }
+  .stat.teal{ --accent:var(--teal); } .stat.teal .val{ color:#125b56; }
+
+  /* ---------- Equity ---------- */
+  .equity{
+    display:flex; border:1.5px solid var(--teal); border-radius:6px; margin-bottom:16px; overflow:hidden;
+  }
+  .equity .left{ width:42%; padding:16px 18px; display:flex; gap:12px; align-items:flex-start; }
+  .equity .left .icon{ width:34px; height:34px; flex:none; margin-top:2px; }
+  .equity .lbl{ font-size:11px; font-weight:700; color:var(--teal); letter-spacing:.5px; margin-bottom:6px; }
+  .equity .val{ font-size:26px; font-weight:800; color:#125b56; }
+  .equity .note{ font-size:10.5px; font-weight:700; color:var(--ink); margin-top:6px; }
+  .equity .right{ flex:1; background:var(--bg); padding:16px 18px; font-size:11.5px; color:var(--slate); line-height:1.5; }
+  .equity .right b{ color:var(--ink); }
+  .equity .right .heading{ font-weight:700; color:var(--ink); font-size:12px; margin-bottom:6px; }
+
+  /* ---------- Action cards ---------- */
+  .actions{ display:flex; gap:12px; margin-bottom:16px; }
+  .action{ flex:1; border:1px solid var(--line); border-radius:6px; overflow:hidden; background:#fff; }
+  .action .body{ padding:16px 18px; }
+  .action .icon-circle{
+    width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    margin-bottom:10px;
+  }
+  .action.change .icon-circle{ background:var(--navy); }
+  .action.keep .icon-circle{ background:var(--teal); }
+  .action h3{ margin:0 0 4px; font-size:15px; }
+  .action p.lead{ margin:0 0 10px; font-size:12px; color:var(--slate); }
+  .action ul{ list-style:none; margin:0 0 12px; padding:0; font-size:12px; color:var(--slate); }
+  .action li{ display:flex; gap:6px; margin-bottom:6px; align-items:flex-start; }
+  .action li svg{ width:14px; height:14px; flex:none; margin-top:2px; }
+  .action.change li svg{ color:var(--navy); }
+  .action.keep li svg{ color:var(--teal); }
+  .strap{ text-align:center; padding:9px; font-size:12px; font-weight:700; color:#fff; }
+  .action.change .strap{ background:var(--navy); }
+  .action.keep .strap{ background:var(--teal); }
+
+  /* ---------- Contact ---------- */
+  .contact{
+    display:flex; border:1px solid var(--line); border-radius:6px; margin-bottom:16px; overflow:hidden; background:#fff;
+  }
+  .contact .left{ flex:1; padding:16px 18px; display:flex; gap:12px; }
+  .contact .icon-circle{
+    width:36px; height:36px; border-radius:8px; background:var(--navy); display:flex; align-items:center;
+    justify-content:center; flex:none;
+  }
+  .contact h3{ margin:0 0 4px; font-size:13.5px; }
+  .contact p{ margin:0; font-size:11.5px; color:var(--slate); line-height:1.5; }
+  .contact .right{ width:44%; padding:16px 18px; font-size:12px; display:flex; flex-direction:column; gap:8px; justify-content:center; }
+  .contact .right div{ display:flex; align-items:center; gap:8px; white-space:nowrap; }
+  .contact .right div span{ display:flex; align-items:center; white-space:nowrap; }
+  .contact .right svg{ width:15px; height:15px; color:var(--navy); flex:none; }
+  .contact .right input{ font-weight:700; }
+
+  /* ---------- Footer ---------- */
+  .footer{ display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid var(--line); padding-top:12px; }
+  .footer .thanks{ font-size:12px; }
+  .footer .thanks b{ display:block; font-size:13px; margin-bottom:2px; }
+  .footer .tagline{ font-size:11px; color:var(--muted); letter-spacing:1px; }
+  .footer .brand{ font-size:16px; font-weight:800; color:var(--navy); text-align:right; }
+  .footer .brand span{ display:block; font-size:9px; letter-spacing:2px; color:var(--muted); font-weight:700; }
+
+  /* ---------- Print ---------- */
+  @media print{
+    body{ padding:0; background:#fff; }
+    .toolbar{ display:none; }
+    #sheet{ box-shadow:none; margin:0; padding:10mm 10mm; width:auto; min-height:0; }
+    input, select{ border:none !important; background:transparent !important; padding:0 !important; }
+    input:focus, select:focus{ outline:none !important; }
+    select{ appearance:none; -webkit-appearance:none; }
+    .veh-select-row select{ display:none; }
+    .stat .val, .equity .val{ }
+    @page{ size:A4; margin:8mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button class="secondary" id="resetBtn">Reset fields</button>
+  <button id="printBtn">Print / Save as PDF</button>
+</div>
+
+<div id="sheet">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-block">
+      <div class="rrg">RRG</div>
+      <div class="grp">GROUP</div>
+    </div>
+    <div class="title-block">
+      <div>
+        <h1>ACCOUNT REVIEW</h1>
+        <div class="sub">Your finance agreement at a glance</div>
+      </div>
+      <div class="meta">
+        <div><label>Review date:</label><input type="text" value="12 May 2025"></div>
+        <div><label>Agreement type:</label><input type="text" value="Conditional Sale"></div>
+        <div><label>Agreement start date:</label><input type="text" value="13 Nov 2023"></div>
+        <div><label>Agreement number:</label><input type="text" value="845052806"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Greeting -->
+  <div class="greet">Dear <input type="text" class="bare" value="Mr Sample" style="width:200px;"></div>
+  <div class="intro">We hope you are enjoying your vehicle. Here is your personalised account review, showing the current position of your finance agreement and the options available to you.</div>
+
+  <!-- Vehicle -->
+  <div class="vehicle-card">
+    <div class="veh-visual">
+      <div id="vehPhotoHolder" class="veh-photo"></div>
+      <div class="veh-select-row">
+        <select id="vehSelect"></select>
+      </div>
+    </div>
+    <div class="veh-info">
+      <div class="label">YOUR VEHICLE</div>
+      <input type="text" id="vehModel" value="Toyota RAV4">
+      <input type="text" id="vehTrim" value="Design AWD Hybrid">
+      <div class="reg-label">Registration</div>
+      <input type="text" id="vehReg" value="EN23 LFF">
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-row">
+    <div class="stat blue">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#3E7CC9" stroke-width="2.4"/><text x="24" y="31" text-anchor="middle" font-size="20" font-weight="700" fill="#3E7CC9" font-family="Arial">£</text></svg>
+      </div>
+      <div class="lbl">MONTHLY PAYMENTS</div>
+      <input class="val" id="payCount" type="text" value="18">
+      <div class="sub">payments remaining</div>
+    </div>
+    <div class="stat amber">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#C98A2B" stroke-width="2.4"/><rect x="15" y="12" width="18" height="24" rx="2" stroke="#C98A2B" stroke-width="2.2"/><line x1="19" y1="19" x2="29" y2="19" stroke="#C98A2B" stroke-width="1.6"/><line x1="19" y1="24" x2="29" y2="24" stroke="#C98A2B" stroke-width="1.6"/><line x1="19" y1="29" x2="25" y2="29" stroke="#C98A2B" stroke-width="1.6"/></svg>
+      </div>
+      <div class="lbl">SETTLEMENT FIGURE</div>
+      <input class="val" id="settleVal" type="text" value="£3,786.34">
+      <div class="sub">to settle your agreement today</div>
+    </div>
+    <div class="stat teal">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#1B7A73" stroke-width="2.4"/><rect x="12" y="24" width="24" height="8" rx="3" stroke="#1B7A73" stroke-width="2.2"/><path d="M15 24 L19 17 H29 L33 24" stroke="#1B7A73" stroke-width="2.2" fill="none" stroke-linejoin="round"/><circle cx="17" cy="32" r="2.6" stroke="#1B7A73" stroke-width="2"/><circle cx="31" cy="32" r="2.6" stroke="#1B7A73" stroke-width="2"/></svg>
+      </div>
+      <div class="lbl">ESTIMATED VALUE</div>
+      <input class="val" id="estVal" type="text" value="£5,500.00">
+      <div class="sub">of your vehicle today</div>
+    </div>
+  </div>
+
+  <!-- Equity -->
+  <div class="equity">
+    <div class="left">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#1B7A73" stroke-width="2.2"/><path d="M24 12 L34 24 L24 36 L14 24 Z" stroke="#1B7A73" stroke-width="2" fill="none"/><text x="24" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#1B7A73" font-family="Arial">£</text></svg>
+      </div>
+      <div>
+        <div class="lbl">YOUR INDICATIVE EQUITY</div>
+        <div class="val" id="equityVal">£1,713.66</div>
+        <div class="note" id="equityNote">The estimated value is higher than your settlement figure.</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="heading">WHAT DOES THIS MEAN?</div>
+      Based on today's figures, your vehicle could be worth more than the amount needed to settle your agreement.<br><br>
+      <b>This difference – <span id="equityInline">£1,713.66</span> – may be available towards your next car.</b>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <div class="action change">
+      <div class="body">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 8h13M17 8l-3-3M17 8l-3 3M20 16H7M7 16l3-3M7 16l3 3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>CHANGE YOUR CAR</h3>
+        <p class="lead">Use your equity towards your next vehicle.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Choose a new or used car that suits you</li>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Use your equity towards your deposit</li>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>We'll settle your current agreement</li>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Drive away in your next car</li>
+        </ul>
+      </div>
+      <div class="strap">A simple way to move on to your next car.</div>
+    </div>
+    <div class="action keep">
+      <div class="body">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#fff" stroke-width="1.8"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#fff" stroke-width="1.8"/></svg>
+        </div>
+        <h3>KEEP YOUR CAR</h3>
+        <p class="lead">Love your car? You can keep it.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Continue with your agreement</li>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Keep making your monthly payments</li>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>No need to change if you're happy</li>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Own the vehicle at the end of the agreement</li>
+        </ul>
+      </div>
+      <div class="strap">Keep doing what works for you.</div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="contact">
+    <div class="left">
+      <div class="icon-circle">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 5h16v11H9l-4 4V5Z" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/><circle cx="9" cy="10.5" r="1" fill="#fff"/><circle cx="12" cy="10.5" r="1" fill="#fff"/><circle cx="15" cy="10.5" r="1" fill="#fff"/></svg>
+      </div>
+      <div>
+        <h3>LET'S TALK ABOUT YOUR OPTIONS</h3>
+        <p>We're here to help you decide what's right for you. Get in touch and one of our team will be happy to talk you through the next steps.</p>
+      </div>
+    </div>
+    <div class="right">
+      <div><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h3l2 5-2 1a11 11 0 0 0 6 6l1-2 5 2v3a2 2 0 0 1-2 2C10 20 4 14 4 5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Call us on&nbsp;<input type="text" value="0161 452 4423" style="width:120px;"></span></div>
+      <div><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><ellipse cx="12" cy="12" rx="4" ry="9" stroke="currentColor" stroke-width="1.6"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.6"/></svg><span>Visit&nbsp;<input type="text" value="rrg-group.com/contact-us" style="width:170px;"></span></div>
+      <div><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.6"/></svg><span>Speak to us in your&nbsp;<input type="text" value="local RRG Group" style="width:120px;">&nbsp;dealership</span></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="thanks">
+      <b>THANK YOU</b>
+      We appreciate your continued custom.
+    </div>
+    <div class="tagline">PEOPLE &nbsp;•&nbsp; RELATIONSHIPS &nbsp;•&nbsp; TRUST</div>
+    <div class="brand">RRG<span>GROUP</span></div>
+  </div>
+
+</div>
+
+<script>
+// ---- Vehicle photos ----
+// Drop real photos in /images named to match the "file" path below.
+// Add or rename a model by editing this list only — the dropdown builds itself from it.
+const vehicles = {
+  aygo: { model: "Toyota Aygo X", file: "images/aygo.jpg" },
+  yaris: { model: "Toyota Yaris", file: "images/yaris.jpg" },
+  rav4: { model: "Toyota RAV4", file: "images/rav4.jpg" },
+  landcruiser: { model: "Toyota Land Cruiser", file: "images/landcruiser.jpg" },
+};
+const DEFAULT_VEHICLE = 'rav4';
+
+const vehSelect = document.getElementById('vehSelect');
+const vehPhotoHolder = document.getElementById('vehPhotoHolder');
+const vehModel = document.getElementById('vehModel');
+
+function populateVehSelect(){
+  vehSelect.innerHTML = Object.keys(vehicles).map(key =>
+    `<option value="${key}">${vehicles[key].model}</option>`
+  ).join('');
+  vehSelect.value = DEFAULT_VEHICLE;
+}
+
+function renderVehicle(){
+  const v = vehicles[vehSelect.value];
+  vehModel.value = v.model;
+  const img = new Image();
+  img.alt = v.model;
+  img.onload = () => {
+    vehPhotoHolder.innerHTML = '';
+    vehPhotoHolder.appendChild(img);
+  };
+  img.onerror = () => {
+    vehPhotoHolder.innerHTML = `<div class="missing">Add photo:<br><code>${v.file}</code></div>`;
+  };
+  img.src = v.file;
+}
+vehSelect.addEventListener('change', renderVehicle);
+populateVehSelect();
+renderVehicle();
+
+// ---- Live equity calculation ----
+function parseMoney(str){
+  const n = parseFloat(String(str).replace(/[^0-9.\-]/g, ''));
+  return isNaN(n) ? 0 : n;
+}
+function formatMoney(n){
+  const sign = n < 0 ? "-" : "";
+  return sign + "£" + Math.abs(n).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function updateEquity(){
+  const settle = parseMoney(document.getElementById('settleVal').value);
+  const est = parseMoney(document.getElementById('estVal').value);
+  const equity = est - settle;
+  const val = formatMoney(equity);
+  document.getElementById('equityVal').textContent = val;
+  document.getElementById('equityInline').textContent = val;
+  const note = document.getElementById('equityNote');
+  note.textContent = equity >= 0
+    ? "The estimated value is higher than your settlement figure."
+    : "The settlement figure is currently higher than the estimated value.";
+}
+document.getElementById('settleVal').addEventListener('input', updateEquity);
+document.getElementById('estVal').addEventListener('input', updateEquity);
+updateEquity();
+
+// ---- Print / Reset ----
+// Nothing here is ever saved (no localStorage/cookies) — every page load already
+// starts from the sample values below. This also clears the form the moment a
+// print/PDF is done, so one customer's details can't carry over to the next.
+function blankFields(){
+  document.querySelectorAll('#sheet input[type=text]').forEach(el => {
+    if (el.id === 'vehModel') return;
+    el.value = '';
+  });
+  document.getElementById('payCount').value = '';
+  updateEquity();
+}
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+window.addEventListener('afterprint', blankFields);
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if (confirm('Reset all fields to blank placeholders?')) blankFields();
+});
+</script>
+
+</body>
+</html>
