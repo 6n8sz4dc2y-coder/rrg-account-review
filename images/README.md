@@ -12,10 +12,12 @@ Drop real photos in here, named to match the `vehicles` list near the top of the
 - `chrplus.png` — Toyota C-HR+
 - `urbancruiser.jpg` — Toyota Urban Cruiser (still needed — not uploaded yet)
 - `rav4.png` — Toyota RAV4
+- `bz4x.png` — Toyota bZ4X
 - `prius.png` — Toyota Prius
 - `proace.png` — Toyota Proace
 - `hilux.png` — Toyota Hilux
 - `landcruiser.png` — Toyota Land Cruiser
+- `other.jpg` — Other Toyota model (Toyota logo, for anything not in this list)
 
 To add or rename a model, edit that one list in `index.html` — no other HTML or
 CSS needs to change, the dropdown builds itself from it.

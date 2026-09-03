@@ -159,7 +159,6 @@
   .footer{ display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid var(--line); padding-top:12px; }
   .footer .thanks{ font-size:12px; }
   .footer .thanks b{ display:block; font-size:13px; margin-bottom:2px; }
-  .footer .tagline{ font-size:11px; color:var(--muted); letter-spacing:1px; }
   .footer .brand{ font-size:16px; font-weight:800; color:var(--navy); text-align:right; }
   .footer .brand span{ display:block; font-size:9px; letter-spacing:2px; color:var(--muted); font-weight:700; }
 
@@ -167,11 +166,50 @@
   @media print{
     body{ padding:0; background:#fff; }
     .toolbar{ display:none; }
-    #sheet{ box-shadow:none; margin:0; padding:10mm 10mm; width:auto; min-height:0; }
+    #sheet{ box-shadow:none; margin:0; padding:8mm 9mm; width:auto; min-height:0; }
     input, select{ border:none !important; background:transparent !important; padding:0 !important; }
     input:focus, select:focus{ outline:none !important; }
     select{ appearance:none; -webkit-appearance:none; }
     .veh-select-row select{ display:none; }
+
+    /* Compact spacing so the review always fits a single A4 page */
+    .header{ margin-bottom:8px; }
+    .logo-block{ padding:10px 20px 10px 16px; }
+    .title-block{ padding:10px 16px; gap:8px; }
+    .title-block h1{ font-size:20px; margin-bottom:2px; }
+    .meta div{ margin-bottom:2px; }
+    .greet{ margin:2px 0 6px; }
+    .intro{ margin-bottom:8px; line-height:1.35; }
+
+    .vehicle-card{ margin-bottom:8px; }
+    .veh-visual{ padding:8px; }
+    .veh-photo{ height:80px; }
+    .veh-info{ padding:10px 14px; }
+    .veh-info input{ margin-bottom:3px; }
+
+    .stat-row{ margin-bottom:8px; gap:8px; }
+    .stat{ padding:8px; }
+    .stat .icon{ width:28px; height:28px; margin-bottom:4px; }
+    .stat .lbl{ margin-bottom:3px; }
+
+    .equity .left, .equity .right{ padding:10px 12px; }
+    .equity{ margin-bottom:8px; }
+    .equity .val{ font-size:20px; }
+
+    .actions{ margin-bottom:8px; gap:8px; }
+    .action .body{ padding:10px 12px; }
+    .action .icon-circle{ width:28px; height:28px; margin-bottom:6px; }
+    .action h3{ font-size:13px; }
+    .action p.lead{ margin-bottom:6px; }
+    .action ul{ margin-bottom:0; }
+    .action li{ margin-bottom:3px; }
+    .strap{ padding:6px; }
+
+    .contact{ margin-bottom:8px; }
+    .contact .left, .contact .right{ padding:10px 12px; }
+
+    .footer{ padding-top:8px; }
+
     .stat .val, .equity .val{ }
     @page{ size:A4; margin:8mm; }
   }
@@ -322,9 +360,9 @@
       </div>
     </div>
     <div class="right">
-      <div><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h3l2 5-2 1a11 11 0 0 0 6 6l1-2 5 2v3a2 2 0 0 1-2 2C10 20 4 14 4 5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Call us on&nbsp;<input type="text" value="0161 452 4423" style="width:120px;"></span></div>
-      <div><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><ellipse cx="12" cy="12" rx="4" ry="9" stroke="currentColor" stroke-width="1.6"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.6"/></svg><span>Visit&nbsp;<input type="text" value="rrg-group.com/contact-us" style="width:170px;"></span></div>
-      <div><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2.3" stroke="currentColor" stroke-width="1.6"/></svg><span>Speak to us in your&nbsp;<input type="text" value="local RRG Group" style="width:120px;">&nbsp;dealership</span></div>
+      <div><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Your contact&nbsp;<input type="text" value="Alex Turner" style="width:140px;"></span></div>
+      <div><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h3l2 5-2 1a11 11 0 0 0 6 6l1-2 5 2v3a2 2 0 0 1-2 2C10 20 4 14 4 5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>Direct line&nbsp;<input type="text" value="07700 900123" style="width:120px;"></span></div>
+      <div><svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5.5" width="17" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Email&nbsp;<input type="text" value="alex.turner@rrg-group.com" style="width:180px;"></span></div>
     </div>
   </div>
 
@@ -334,7 +372,6 @@
       <b>THANK YOU</b>
       We appreciate your continued custom.
     </div>
-    <div class="tagline">PEOPLE &nbsp;•&nbsp; RELATIONSHIPS &nbsp;•&nbsp; TRUST</div>
     <div class="brand">RRG<span>GROUP</span></div>
   </div>
 
@@ -354,10 +391,12 @@ const vehicles = {
   chrplus: { model: "Toyota C-HR+", file: "images/chrplus.png" },
   urbancruiser: { model: "Toyota Urban Cruiser", file: "images/urbancruiser.jpg" },
   rav4: { model: "Toyota RAV4", file: "images/rav4.png" },
+  bz4x: { model: "Toyota bZ4X", file: "images/bz4x.png" },
   prius: { model: "Toyota Prius", file: "images/prius.png" },
   proace: { model: "Toyota Proace", file: "images/proace.png" },
   hilux: { model: "Toyota Hilux", file: "images/hilux.png" },
   landcruiser: { model: "Toyota Land Cruiser", file: "images/landcruiser.png" },
+  other: { model: "Other Toyota model", file: "images/other.jpg" },
 };
 const DEFAULT_VEHICLE = 'rav4';
 
