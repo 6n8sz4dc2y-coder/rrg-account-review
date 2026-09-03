@@ -3,13 +3,19 @@
 Drop real photos in here, named to match the `vehicles` list near the top of the
 `<script>` block in `index.html`:
 
-- `aygo.jpg` — Toyota Aygo X
-- `yaris.jpg` — Toyota Yaris
-- `corolla.jpg` — Toyota Corolla
-- `yariscross.jpg` — Toyota Yaris Cross
-- `urbancruiser.jpg` — Toyota Urban Cruiser
-- `rav4.jpg` — Toyota RAV4
-- `landcruiser.jpg` — Toyota Land Cruiser
+- `aygo.png` — Toyota Aygo X
+- `yaris.png` — Toyota Yaris
+- `yariscross.png` — Toyota Yaris Cross
+- `corolla.png` — Toyota Corolla
+- `corollats.png` — Toyota Corolla Touring Sports
+- `chr.png` — Toyota C-HR
+- `chrplus.png` — Toyota C-HR+
+- `urbancruiser.jpg` — Toyota Urban Cruiser (still needed — not uploaded yet)
+- `rav4.png` — Toyota RAV4
+- `prius.png` — Toyota Prius
+- `proace.png` — Toyota Proace
+- `hilux.png` — Toyota Hilux
+- `landcruiser.png` — Toyota Land Cruiser
 
 To add or rename a model, edit that one list in `index.html` — no other HTML or
 CSS needs to change, the dropdown builds itself from it.
