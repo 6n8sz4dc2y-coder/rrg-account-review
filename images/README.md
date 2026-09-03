@@ -5,6 +5,7 @@ Drop real photos in here, named to match the `vehicles` list near the top of the
 
 - `aygo.jpg` — Toyota Aygo X
 - `yaris.jpg` — Toyota Yaris
+- `corolla.jpg` — Toyota Corolla
 - `yariscross.jpg` — Toyota Yaris Cross
 - `urbancruiser.jpg` — Toyota Urban Cruiser
 - `rav4.jpg` — Toyota RAV4
