@@ -21,7 +21,7 @@
   body{
     margin:0; background:var(--bg); color:var(--ink);
     font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-    display:flex; justify-content:center; padding:28px 12px 60px;
+    display:flex; flex-direction:column; align-items:center; padding:28px 12px 60px;
   }
   #sheet{
     width:210mm; min-height:297mm; background:#fff; padding:14mm 12mm;
@@ -29,7 +29,7 @@
   }
   .toolbar{
     width:210mm; max-width:100%; margin:0 auto 14px; display:flex; gap:10px;
-    justify-content:flex-end; align-items:center;
+    justify-content:space-between; align-items:center; flex-wrap:wrap;
   }
   .toolbar button{
     background:var(--navy); color:#fff; border:none; padding:10px 18px;
@@ -37,6 +37,15 @@
   }
   .toolbar button.secondary{ background:#fff; color:var(--navy); border:1.5px solid var(--navy); }
   .toolbar button:hover{ opacity:.9; }
+  .toolbar .buttons{ display:flex; gap:10px; }
+  .mode-toggle{ display:flex; border:1.5px solid var(--navy); border-radius:6px; overflow:hidden; }
+  .mode-btn{
+    background:#fff; color:var(--navy); border:none; padding:10px 14px;
+    font-weight:600; font-size:13px; cursor:pointer; font-family:inherit;
+  }
+  .mode-btn + .mode-btn{ border-left:1.5px solid var(--navy); }
+  .mode-btn.active{ background:var(--navy); color:#fff; }
+  .mode-btn:hover{ opacity:.9; }
 
   input, select{
     font-family:inherit; border:1px solid var(--line); background:#FCFCFA;
@@ -123,6 +132,31 @@
   .equity .right{ flex:1; background:var(--bg); padding:16px 18px; font-size:11.5px; color:var(--slate); line-height:1.5; }
   .equity .right b{ color:var(--ink); }
   .equity .right .heading{ font-weight:700; color:var(--ink); font-size:12px; margin-bottom:6px; }
+  .equity .pre-msg{ width:auto; flex:1; }
+  .equity .pre-msg .note{ font-weight:400; color:var(--slate); font-size:11.5px; margin-top:4px; line-height:1.5; }
+
+  /* ---------- Condition & maintenance ---------- */
+  .condition-card{
+    border:1px solid var(--line); border-radius:6px; margin-bottom:16px; background:#fff; padding:16px 18px;
+  }
+  .condition-card .head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .condition-card .icon-circle{
+    width:32px; height:32px; border-radius:50%; background:var(--amber); flex:none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .condition-card h3{ margin:0; font-size:14px; }
+  .cond-table{ width:100%; border-collapse:collapse; font-size:12px; }
+  .cond-table th{
+    text-align:left; font-size:10.5px; letter-spacing:.5px; color:var(--slate); font-weight:700;
+    padding:0 0 6px; border-bottom:1px solid var(--line);
+  }
+  .cond-table th:last-child, .cond-table td:last-child{ text-align:right; width:110px; }
+  .cond-table td{ padding:6px 0; border-bottom:1px solid var(--line); vertical-align:middle; }
+  .cond-table .cond-item{ width:100%; font-weight:600; }
+  .cond-table .cond-cost{ width:90px; text-align:right; font-weight:600; }
+  .cond-table tfoot td{ border-bottom:none; border-top:1.5px solid var(--ink); padding-top:8px; font-weight:800; }
+  .cond-table tfoot td:first-child{ font-size:12px; }
+  .condition-card .footnote{ font-size:11px; color:var(--slate); margin-top:10px; line-height:1.5; }
 
   /* ---------- Action cards ---------- */
   .actions{ display:flex; gap:12px; margin-bottom:16px; }
@@ -173,49 +207,60 @@
   @media print{
     body{ padding:0; background:#fff; }
     .toolbar{ display:none; }
-    #sheet{ box-shadow:none; margin:0; padding:8mm 9mm; width:auto; min-height:0; }
+    #sheet{ box-shadow:none; margin:0; padding:7mm 9mm; width:auto; min-height:0; }
     input, select{ border:none !important; background:transparent !important; padding:0 !important; }
     input:focus, select:focus{ outline:none !important; }
     select{ appearance:none; -webkit-appearance:none; }
     .veh-select-row select{ display:none; }
 
-    /* Compact spacing so the review always fits a single A4 page */
-    .header{ margin-bottom:8px; }
-    .logo-block{ padding:10px 20px 10px 16px; }
-    .title-block{ padding:10px 16px; gap:8px; }
-    .title-block h1{ font-size:20px; margin-bottom:2px; }
-    .meta div{ margin-bottom:2px; }
-    .greet{ margin:2px 0 6px; }
-    .intro{ margin-bottom:8px; line-height:1.35; }
+    /* Compact spacing so the review always fits a single A4 page, even with
+       the condition & maintenance panel showing */
+    .header{ margin-bottom:6px; }
+    .logo-block{ padding:6px 20px 6px 16px; }
+    .title-block{ padding:6px 16px; gap:6px; }
+    .title-block h1{ font-size:18px; margin-bottom:1px; }
+    .meta div{ margin-bottom:1px; }
+    .greet{ margin:2px 0 4px; }
+    .intro{ margin-bottom:6px; line-height:1.3; }
 
-    .vehicle-card{ margin-bottom:8px; }
-    .veh-visual{ padding:8px; }
-    .veh-photo{ height:80px; }
-    .veh-info{ padding:10px 14px; }
+    .vehicle-card{ margin-bottom:6px; }
+    .veh-visual{ padding:6px; }
+    .veh-photo{ height:58px; }
+    .veh-info{ padding:8px 14px; }
     .veh-info input{ margin-bottom:3px; }
 
-    .stat-row{ margin-bottom:8px; gap:8px; }
-    .stat{ padding:8px; }
-    .stat .icon{ width:28px; height:28px; margin-bottom:4px; }
-    .stat .lbl{ margin-bottom:3px; }
+    .stat-row{ margin-bottom:6px; gap:6px; }
+    .stat{ padding:6px; }
+    .stat .icon{ width:24px; height:24px; margin-bottom:3px; }
+    .stat .lbl{ margin-bottom:2px; }
 
-    .equity .left, .equity .right{ padding:10px 12px; }
-    .equity{ margin-bottom:8px; }
-    .equity .val{ font-size:20px; }
+    .equity .left, .equity .right{ padding:8px 12px; }
+    .equity{ margin-bottom:6px; }
+    .equity .val{ font-size:18px; }
 
-    .actions{ margin-bottom:8px; gap:8px; }
-    .action .body{ padding:10px 12px; }
-    .action .icon-circle{ width:28px; height:28px; margin-bottom:6px; }
-    .action h3{ font-size:13px; }
-    .action p.lead{ margin-bottom:6px; }
+    .actions{ margin-bottom:6px; gap:8px; }
+    .action .body{ padding:8px 12px; }
+    .action .icon-circle{ width:24px; height:24px; margin-bottom:4px; }
+    .action h3{ font-size:12px; }
+    .action p.lead{ margin-bottom:4px; }
     .action ul{ margin-bottom:0; }
-    .action li{ margin-bottom:3px; }
-    .strap{ padding:6px; }
+    .action li{ margin-bottom:2px; }
+    .strap{ padding:5px; }
 
-    .contact{ margin-bottom:8px; }
-    .contact .left, .contact .right{ padding:10px 12px; }
+    .contact{ margin-bottom:6px; }
+    .contact .left, .contact .right{ padding:8px 12px; }
 
-    .footer{ padding-top:8px; }
+    .condition-card{ margin-bottom:5px; padding:5px 10px; }
+    .condition-card .head{ margin-bottom:4px; }
+    .condition-card .icon-circle{ width:20px; height:20px; }
+    .cond-table th{ padding-bottom:4px; }
+    .cond-table td{ padding:3px 0; }
+    .cond-table tfoot td{ padding-top:4px; }
+    .condition-card .footnote{ margin-top:4px; }
+    .cond-row-empty{ display:none; }
+    .condition-card.cond-empty{ display:none; }
+
+    .footer{ padding-top:6px; }
 
     .stat .val, .equity .val{ }
     @page{ size:A4; margin:8mm; }
@@ -225,8 +270,14 @@
 <body>
 
 <div class="toolbar">
-  <button class="secondary" id="resetBtn">Reset fields</button>
-  <button id="printBtn">Print / Save as PDF</button>
+  <div class="mode-toggle">
+    <button type="button" class="mode-btn active" id="modeFullBtn" data-mode="full">Full review</button>
+    <button type="button" class="mode-btn" id="modePreBtn" data-mode="pre">Pre-appointment (no valuation)</button>
+  </div>
+  <div class="buttons">
+    <button class="secondary" id="resetBtn">Reset fields</button>
+    <button id="printBtn">Print / Save as PDF</button>
+  </div>
 </div>
 
 <div id="sheet">
@@ -304,7 +355,7 @@
       <input class="val" id="settleVal" type="text" value="£3,786.34">
       <div class="sub">to settle your agreement today</div>
     </div>
-    <div class="stat teal">
+    <div class="stat teal" id="estValStat">
       <div class="icon">
         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#1B7A73" stroke-width="2.4"/><rect x="12" y="24" width="24" height="8" rx="3" stroke="#1B7A73" stroke-width="2.2"/><path d="M15 24 L19 17 H29 L33 24" stroke="#1B7A73" stroke-width="2.2" fill="none" stroke-linejoin="round"/><circle cx="17" cy="32" r="2.6" stroke="#1B7A73" stroke-width="2"/><circle cx="31" cy="32" r="2.6" stroke="#1B7A73" stroke-width="2"/></svg>
       </div>
@@ -316,7 +367,7 @@
 
   <!-- Equity -->
   <div class="equity">
-    <div class="left">
+    <div class="left" id="equityLeft">
       <div class="icon">
         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#1B7A73" stroke-width="2.2"/><path d="M24 12 L34 24 L24 36 L14 24 Z" stroke="#1B7A73" stroke-width="2" fill="none"/><text x="24" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#1B7A73" font-family="Arial">£</text></svg>
       </div>
@@ -326,11 +377,41 @@
         <div class="note" id="equityNote">The estimated value is higher than your settlement figure.</div>
       </div>
     </div>
-    <div class="right">
+    <div class="right" id="equityRight">
       <div class="heading">WHAT DOES THIS MEAN?</div>
       Based on today's figures, your vehicle could be worth more than the amount needed to settle your agreement.<br><br>
       <b>This difference – <span id="equityInline">£1,713.66</span> – may be available towards your next car.</b>
     </div>
+    <div class="left pre-msg" id="equityPreMsg" style="display:none;">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#1B7A73" stroke-width="2.2"/><path d="M24 12 L34 24 L24 36 L14 24 Z" stroke="#1B7A73" stroke-width="2" fill="none"/><text x="24" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#1B7A73" font-family="Arial">£</text></svg>
+      </div>
+      <div>
+        <div class="lbl">YOUR PART-EXCHANGE</div>
+        <div class="note">Once we've appraised your part-exchange in person, any equity could go towards the deposit on your next vehicle.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Condition & maintenance (only when an appraisal has actually happened) -->
+  <div class="condition-card" id="conditionCard" style="display:none;">
+    <div class="head">
+      <div class="icon-circle">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M12 3l8 4v5c0 4.5-3.2 7.7-8 9-4.8-1.3-8-4.5-8-9V7l8-4Z" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.5 12l1.8 1.8L14.5 10" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>CONDITION &amp; MAINTENANCE</h3>
+    </div>
+    <table class="cond-table">
+      <thead><tr><th>Item</th><th>Est. cost</th></tr></thead>
+      <tbody id="condRows">
+        <tr class="cond-row"><td><input type="text" class="cond-item" value="Alloy scuff repair (2x)"></td><td><input type="text" class="cond-cost" value="£120.00"></td></tr>
+        <tr class="cond-row"><td><input type="text" class="cond-item" value="Tyre replacement (2x, ~2mm)"></td><td><input type="text" class="cond-cost" value="£180.00"></td></tr>
+        <tr class="cond-row"><td><input type="text" class="cond-item" value="Service due (Feb 2027)"></td><td><input type="text" class="cond-cost" value="£249.00"></td></tr>
+        <tr class="cond-row"><td><input type="text" class="cond-item" value=""></td><td><input type="text" class="cond-cost" value=""></td></tr>
+      </tbody>
+      <tfoot><tr><td>Total</td><td id="condTotal">£549.00</td></tr></tfoot>
+    </table>
+    <div class="footnote">Identified during your part-exchange appraisal — happy to arrange any of this for you, whenever suits.</div>
   </div>
 
   <!-- Actions -->
@@ -485,6 +566,51 @@ function updateGfvPayments(){
 payCount.addEventListener('input', updateGfvPayments);
 updateGfvPayments();
 
+// ---- Condition & maintenance ----
+// On screen every row stays editable, filled or not, so staff can always get
+// to a blank slot. Only the printed/PDF output hides rows nobody filled in
+// (via the cond-row-empty / cond-empty print rules) — a car with nothing to
+// flag just doesn't show the panel on the page the customer takes away. The
+// panel also never appears at all without an appraisal (tied to reviewMode).
+function updateConditionPanel(){
+  let anyFilled = false;
+  let total = 0;
+  document.querySelectorAll('.cond-row').forEach(row => {
+    const item = row.querySelector('.cond-item').value.trim();
+    const cost = row.querySelector('.cond-cost').value.trim();
+    const hasContent = item !== '' || cost !== '';
+    row.classList.toggle('cond-row-empty', !hasContent);
+    if (hasContent){ anyFilled = true; total += parseMoney(cost); }
+  });
+  document.getElementById('condTotal').textContent = formatMoney(total);
+  const conditionCard = document.getElementById('conditionCard');
+  conditionCard.classList.toggle('cond-empty', !anyFilled);
+  conditionCard.style.display = reviewMode === 'full' ? '' : 'none';
+}
+document.querySelectorAll('.cond-item, .cond-cost').forEach(el => el.addEventListener('input', updateConditionPanel));
+
+// ---- Review mode ----
+// "Pre-appointment" is for account-review calls or videos sent before
+// anyone has physically seen the car — no valuation is quoted, since missed
+// services, amber work and body damage can move it once it's inspected.
+// Monthly Payments, Guaranteed Value and Settlement Figure are fixed
+// contract terms rather than appraisal-dependent, so they stay either way.
+let reviewMode = 'full';
+function setReviewMode(mode){
+  reviewMode = mode;
+  document.getElementById('modeFullBtn').classList.toggle('active', mode === 'full');
+  document.getElementById('modePreBtn').classList.toggle('active', mode === 'pre');
+  const isPre = mode === 'pre';
+  document.getElementById('estValStat').style.display = isPre ? 'none' : '';
+  document.getElementById('equityLeft').style.display = isPre ? 'none' : '';
+  document.getElementById('equityRight').style.display = isPre ? 'none' : '';
+  document.getElementById('equityPreMsg').style.display = isPre ? '' : 'none';
+  updateConditionPanel();
+}
+document.getElementById('modeFullBtn').addEventListener('click', () => setReviewMode('full'));
+document.getElementById('modePreBtn').addEventListener('click', () => setReviewMode('pre'));
+setReviewMode('full');
+
 // ---- Agreement type ----
 // Guaranteed Future Value only applies to PCP agreements (the balloon payment
 // due at the end if the customer wants to own the car outright).
@@ -520,6 +646,7 @@ function blankFields(){
   setReviewDateToToday();
   updateEquity();
   updateGfvPayments();
+  updateConditionPanel();
 }
 
 document.getElementById('printBtn').addEventListener('click', () => window.print());
