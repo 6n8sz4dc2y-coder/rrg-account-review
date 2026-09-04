@@ -64,8 +64,6 @@
   .meta label{ width:130px; color:var(--muted); flex:none; }
   .meta input, .meta select{ font-weight:600; width:130px; }
   #agreementType{ width:210px; }
-  .gfv-note{ font-size:11px; color:var(--muted); font-weight:400; white-space:nowrap; }
-  .gfv-note input{ font-weight:600; }
 
   /* ---------- Greeting ---------- */
   .greet{ font-size:15px; margin:4px 0 10px; }
@@ -103,9 +101,14 @@
   .stat .lbl{ font-size:10.5px; letter-spacing:.5px; color:var(--slate); font-weight:700; margin-bottom:6px; }
   .stat .val{ font-size:20px; font-weight:800; border:none; background:transparent; text-align:center; width:100%; color:var(--ink); }
   .stat .sub{ font-size:10.5px; color:var(--muted); margin-top:4px; }
+  .stat .sub-input{
+    width:24px; text-align:center; border:none; background:transparent; padding:0;
+    font-size:inherit; font-weight:700; color:var(--slate);
+  }
   .stat.blue{ --accent:#3E7CC9; } .stat.blue .val{ color:#2A5C9B; }
   .stat.amber{ --accent:var(--amber); } .stat.amber .val{ color:#93691E; }
   .stat.teal{ --accent:var(--teal); } .stat.teal .val{ color:#125b56; }
+  .stat.navy{ --accent:var(--navy); } .stat.navy .val{ color:var(--navy2); }
 
   /* ---------- Equity ---------- */
   .equity{
@@ -249,11 +252,6 @@
         </div>
         <div><label>Agreement start date:</label><input type="text" value="13 Nov 2023"></div>
         <div><label>Agreement number:</label><input type="text" value="845052806"></div>
-        <div id="gfvRow" class="gfv-row">
-          <label>Guaranteed value:</label>
-          <input type="text" id="gfvAmount" value="£9,250.00" style="width:90px;">
-          <span class="gfv-note">due after&nbsp;<input type="text" id="gfvPayments" value="36" style="width:26px;text-align:center;">&nbsp;payments</span>
-        </div>
       </div>
     </div>
   </div>
@@ -288,6 +286,14 @@
       <div class="lbl">MONTHLY PAYMENTS</div>
       <input class="val" id="payCount" type="text" value="18">
       <div class="sub">payments remaining</div>
+    </div>
+    <div class="stat navy" id="gfvStat">
+      <div class="icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#0F2138" stroke-width="2.4"/><path d="M24 13c3 2 6 3 9 3v8c0 6-4 10-9 12-5-2-9-6-9-12v-8c3 0 6-1 9-3Z" stroke="#0F2138" stroke-width="2" stroke-linejoin="round"/><path d="M20 24l3 3 5-6" stroke="#0F2138" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="lbl">GUARANTEED VALUE</div>
+      <input class="val" id="gfvAmount" type="text" value="£9,250.00">
+      <div class="sub">due after&nbsp;<input type="text" id="gfvPayments" value="36" class="sub-input">&nbsp;payments</div>
     </div>
     <div class="stat amber">
       <div class="icon">
@@ -472,9 +478,9 @@ updateEquity();
 // Guaranteed Future Value only applies to PCP agreements (the balloon payment
 // due at the end if the customer wants to own the car outright).
 const agreementType = document.getElementById('agreementType');
-const gfvRow = document.getElementById('gfvRow');
+const gfvStat = document.getElementById('gfvStat');
 function updateAgreementType(){
-  gfvRow.style.display = agreementType.value === 'pcp' ? 'flex' : 'none';
+  gfvStat.style.display = agreementType.value === 'pcp' ? '' : 'none';
 }
 agreementType.addEventListener('change', updateAgreementType);
 updateAgreementType();
