@@ -136,8 +136,14 @@
 
   /* ---------- Estimated value + condition & maintenance ---------- */
   .appraisal-row{ display:flex; gap:12px; margin-bottom:16px; align-items:stretch; }
-  .appraisal-row .stat{ flex:0 0 36%; margin-bottom:0; }
+  .appraisal-row .stat{ flex:0 0 36%; margin-bottom:0; display:flex; flex-direction:column; }
   .appraisal-row .condition-card{ flex:1; min-width:0; margin-bottom:0; }
+
+  .stat-breakdown{ margin-top:auto; padding-top:10px; border-top:1px solid var(--line); font-size:11px; }
+  .stat-breakdown .bd-row{ display:flex; justify-content:space-between; gap:8px; color:var(--slate); margin-bottom:4px; }
+  .stat-breakdown .bd-row span:last-child{ font-weight:700; }
+  .stat-breakdown .bd-row.net{ font-weight:800; color:var(--ink); font-size:12.5px; margin-bottom:0; }
+  .stat-breakdown .bd-row.net span:last-child{ color:#125b56; }
 
   .condition-card{
     border:1px solid var(--line); border-radius:6px; background:#fff; padding:14px 16px;
@@ -239,6 +245,9 @@
     .stat .lbl{ margin-bottom:2px; }
 
     .appraisal-row{ margin-bottom:6px; gap:8px; }
+    .stat-breakdown{ padding-top:6px; font-size:10px; }
+    .stat-breakdown .bd-row{ margin-bottom:2px; }
+    .stat-breakdown .bd-row.net{ font-size:11px; }
 
     .equity .left, .equity .right{ padding:8px 12px; }
     .equity{ margin-bottom:6px; }
@@ -371,6 +380,10 @@
       <div class="lbl">ESTIMATED VALUE</div>
       <input class="val" id="estVal" type="text" value="£13,770.00">
       <div class="sub">of your vehicle today</div>
+      <div class="stat-breakdown" id="estBreakdown" style="display:none;">
+        <div class="bd-row"><span>Less refurb (est.)</span><span id="estRefurb">−£0.00</span></div>
+        <div class="bd-row net"><span>Net value</span><span id="estNetVal">£0.00</span></div>
+      </div>
     </div>
     <div class="condition-card" id="conditionCard" style="display:none;">
       <div class="head">
@@ -593,8 +606,23 @@ function updateConditionPanel(){
   const conditionCard = document.getElementById('conditionCard');
   conditionCard.classList.toggle('cond-empty', !anyFilled);
   conditionCard.style.display = reviewMode === 'full' ? '' : 'none';
+  updateEstBreakdown();
 }
 document.querySelectorAll('.cond-item, .cond-cost').forEach(el => el.addEventListener('input', updateConditionPanel));
+
+// Estimated Value box shows its own net-of-refurb breakdown once there's
+// something in the Condition & Maintenance panel to subtract — fills the
+// box (which is stretched to match Condition & Maintenance's height
+// anyway) and ties the two figures together rather than leaving it blank.
+function updateEstBreakdown(){
+  const refurb = [...document.querySelectorAll('.cond-cost')].reduce((sum, el) => sum + parseMoney(el.value), 0);
+  const gross = parseMoney(document.getElementById('estVal').value);
+  document.getElementById('estRefurb').textContent = '−' + formatMoney(refurb);
+  document.getElementById('estNetVal').textContent = formatMoney(gross - refurb);
+  document.getElementById('estBreakdown').style.display = refurb > 0 ? '' : 'none';
+}
+document.getElementById('estVal').addEventListener('input', updateEstBreakdown);
+updateEstBreakdown();
 
 // ---- Review mode ----
 // "Pre-appointment" is for account-review calls or videos sent before
