@@ -218,65 +218,69 @@
   @media print{
     body{ padding:0; background:#fff; }
     .toolbar{ display:none; }
-    #sheet{ box-shadow:none; margin:0; padding:7mm 9mm; width:auto; min-height:0; }
+    #sheet{ box-shadow:none; margin:0; padding:6mm 9mm; width:auto; min-height:0; }
     input, select{ border:none !important; background:transparent !important; padding:0 !important; }
     input:focus, select:focus{ outline:none !important; }
     select{ appearance:none; -webkit-appearance:none; }
     .veh-select-row select{ display:none; }
 
     /* Compact spacing so the review always fits a single A4 page, even with
-       the condition & maintenance panel showing */
-    .header{ margin-bottom:6px; }
-    .logo-block{ padding:6px 20px 6px 16px; }
-    .logo-block .logo-img{ width:80px; }
-    .title-block{ padding:6px 16px; gap:6px; }
-    .title-block h1{ font-size:18px; margin-bottom:1px; }
+       the condition & maintenance panel showing. Deliberately trimmed with a
+       healthy margin below the A4 limit, not right up against it — different
+       browsers/printers round font and line-height slightly differently, and
+       a design that only just fits in one test environment can still spill
+       a line onto page 2 in another. */
+    .header{ margin-bottom:5px; }
+    .logo-block{ padding:5px 20px 5px 16px; }
+    .logo-block .logo-img{ width:74px; }
+    .title-block{ padding:5px 16px; gap:6px; }
+    .title-block h1{ font-size:17px; margin-bottom:1px; }
     .meta div{ margin-bottom:1px; }
-    .greet{ margin:2px 0 4px; }
-    .intro{ margin-bottom:6px; line-height:1.3; }
+    .greet{ margin:2px 0 3px; }
+    .intro{ margin-bottom:5px; line-height:1.25; }
 
-    .vehicle-card{ margin-bottom:6px; }
-    .veh-visual{ padding:6px; }
-    .veh-photo{ height:58px; }
-    .veh-info{ padding:8px 14px; }
-    .veh-info input{ margin-bottom:3px; }
+    .vehicle-card{ margin-bottom:5px; }
+    .veh-visual{ padding:5px; }
+    .veh-photo{ height:48px; }
+    .veh-info{ padding:6px 14px; }
+    .veh-info input{ margin-bottom:2px; }
 
-    .stat-row{ margin-bottom:6px; gap:6px; }
-    .stat{ padding:6px; }
-    .stat .icon{ width:24px; height:24px; margin-bottom:3px; }
+    .stat-row{ margin-bottom:5px; gap:6px; }
+    .stat{ padding:5px; }
+    .stat .icon{ width:20px; height:20px; margin-bottom:2px; }
     .stat .lbl{ margin-bottom:2px; }
 
-    .appraisal-row{ margin-bottom:6px; gap:8px; }
-    .stat-breakdown{ padding-top:6px; font-size:10px; }
+    .appraisal-row{ margin-bottom:5px; gap:8px; }
+    .stat-breakdown{ padding-top:5px; font-size:9.5px; }
     .stat-breakdown .bd-row{ margin-bottom:2px; }
 
-    .equity .left, .equity .right{ padding:8px 12px; }
-    .equity{ margin-bottom:6px; }
-    .equity .val{ font-size:18px; }
+    .equity .left, .equity .right{ padding:6px 12px; }
+    .equity{ margin-bottom:5px; }
+    .equity .val{ font-size:16px; }
 
-    .actions{ margin-bottom:6px; gap:8px; }
-    .action .body{ padding:8px 12px; }
-    .action .icon-circle{ width:24px; height:24px; margin-bottom:4px; }
-    .action h3{ font-size:12px; }
-    .action p.lead{ margin-bottom:4px; }
+    .actions{ margin-bottom:5px; gap:8px; }
+    .action .body{ padding:6px 12px; }
+    .action .icon-circle{ width:20px; height:20px; margin-bottom:3px; }
+    .action h3{ font-size:11.5px; }
+    .action p.lead{ margin-bottom:3px; }
     .action ul{ margin-bottom:0; }
     .action li{ margin-bottom:2px; }
-    .strap{ padding:5px; }
+    .strap{ padding:4px; }
 
-    .contact{ margin-bottom:6px; }
-    .contact .left, .contact .right{ padding:8px 12px; }
+    .contact{ margin-bottom:5px; }
+    .contact .left, .contact .right{ padding:6px 12px; }
 
-    .condition-card{ padding:5px 10px; }
-    .condition-card .head{ margin-bottom:4px; }
-    .condition-card .icon-circle{ width:20px; height:20px; }
-    .cond-table th{ padding-bottom:4px; }
-    .cond-table td{ padding:3px 0; }
-    .cond-table tfoot td{ padding-top:4px; }
-    .condition-card .footnote{ margin-top:4px; }
+    .condition-card{ padding:4px 8px; }
+    .condition-card .head{ margin-bottom:3px; }
+    .condition-card .icon-circle{ width:18px; height:18px; }
+    .cond-table th{ padding-bottom:3px; }
+    .cond-table td{ padding:2px 0; }
+    .cond-table tfoot td{ padding-top:3px; }
+    .condition-card .footnote{ margin-top:3px; }
     .cond-row-empty{ display:none; }
     .condition-card.cond-empty{ display:none; }
 
-    .footer{ padding-top:6px; }
+    .footer{ padding-top:5px; }
 
     .stat .val, .equity .val{ }
     @page{ size:A4; margin:8mm; }
