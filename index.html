@@ -139,11 +139,14 @@
   .appraisal-row .stat{ flex:0 0 36%; margin-bottom:0; display:flex; flex-direction:column; }
   .appraisal-row .condition-card{ flex:1; min-width:0; margin-bottom:0; }
 
-  .stat-breakdown{ margin-top:auto; padding-top:10px; border-top:1px solid var(--line); font-size:11px; }
-  .stat-breakdown .bd-row{ display:flex; justify-content:space-between; gap:8px; color:var(--slate); margin-bottom:4px; }
-  .stat-breakdown .bd-row span:last-child{ font-weight:700; }
-  .stat-breakdown .bd-row.net{ font-weight:800; color:var(--ink); font-size:12.5px; margin-bottom:0; }
-  .stat-breakdown .bd-row.net span:last-child{ color:#125b56; }
+  .stat-breakdown{ margin-top:auto; padding-top:10px; border-top:1px solid var(--line); font-size:11px; text-align:left; }
+  .stat-breakdown .bd-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; color:var(--slate); margin-bottom:4px; }
+  .stat-breakdown .bd-row:last-child{ margin-bottom:0; }
+  .stat-breakdown .bd-row span:last-child{ font-weight:700; color:var(--ink); }
+  .bd-input{
+    width:74px; text-align:right; font-weight:700; color:var(--ink);
+    border:none; background:transparent; padding:0; font-size:inherit; font-family:inherit;
+  }
 
   .condition-card{
     border:1px solid var(--line); border-radius:6px; background:#fff; padding:14px 16px;
@@ -247,7 +250,6 @@
     .appraisal-row{ margin-bottom:6px; gap:8px; }
     .stat-breakdown{ padding-top:6px; font-size:10px; }
     .stat-breakdown .bd-row{ margin-bottom:2px; }
-    .stat-breakdown .bd-row.net{ font-size:11px; }
 
     .equity .left, .equity .right{ padding:8px 12px; }
     .equity{ margin-bottom:6px; }
@@ -378,11 +380,11 @@
         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="21" stroke="#1B7A73" stroke-width="2.4"/><rect x="12" y="24" width="24" height="8" rx="3" stroke="#1B7A73" stroke-width="2.2"/><path d="M15 24 L19 17 H29 L33 24" stroke="#1B7A73" stroke-width="2.2" fill="none" stroke-linejoin="round"/><circle cx="17" cy="32" r="2.6" stroke="#1B7A73" stroke-width="2"/><circle cx="31" cy="32" r="2.6" stroke="#1B7A73" stroke-width="2"/></svg>
       </div>
       <div class="lbl">ESTIMATED VALUE</div>
-      <input class="val" id="estVal" type="text" value="£13,770.00">
-      <div class="sub">of your vehicle today</div>
-      <div class="stat-breakdown" id="estBreakdown" style="display:none;">
-        <div class="bd-row"><span>Less refurb (est.)</span><span id="estRefurb">−£0.00</span></div>
-        <div class="bd-row net"><span>Net value</span><span id="estNetVal">£0.00</span></div>
+      <div class="val" id="estNetVal">£13,770.00</div>
+      <div class="sub" id="estSub">of your vehicle today</div>
+      <div class="stat-breakdown">
+        <div class="bd-row"><span>Vehicle value</span><input type="text" id="estVal" value="£13,770.00" class="bd-input"></div>
+        <div class="bd-row" id="estRefurbRow" style="display:none;"><span>Less refurb (est.)</span><span id="estRefurb">−£0.00</span></div>
       </div>
     </div>
     <div class="condition-card" id="conditionCard" style="display:none;">
@@ -560,10 +562,19 @@ function formatMoney(n){
   const sign = n < 0 ? "-" : "";
   return sign + "£" + Math.abs(n).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+// The vehicle value staff type in is the gross appraisal figure; anything
+// flagged in Condition & Maintenance comes off it so every other figure on
+// the page (the headline Estimated Value, and Indicative Equity below) is
+// always the real net number rather than a gross figure nobody's offering.
+function currentRefurbTotal(){
+  return [...document.querySelectorAll('.cond-cost')].reduce((sum, el) => sum + parseMoney(el.value), 0);
+}
+function estimatedNetValue(){
+  return parseMoney(document.getElementById('estVal').value) - currentRefurbTotal();
+}
 function updateEquity(){
   const settle = parseMoney(document.getElementById('settleVal').value);
-  const est = parseMoney(document.getElementById('estVal').value);
-  const equity = est - settle;
+  const equity = estimatedNetValue() - settle;
   const val = formatMoney(equity);
   document.getElementById('equityVal').textContent = val;
   document.getElementById('equityInline').textContent = val;
@@ -573,7 +584,6 @@ function updateEquity(){
     : "The settlement figure is currently higher than the estimated value.";
 }
 document.getElementById('settleVal').addEventListener('input', updateEquity);
-document.getElementById('estVal').addEventListener('input', updateEquity);
 updateEquity();
 
 // The Guaranteed Future Value falls due once the same payments shown in the
@@ -610,16 +620,20 @@ function updateConditionPanel(){
 }
 document.querySelectorAll('.cond-item, .cond-cost').forEach(el => el.addEventListener('input', updateConditionPanel));
 
-// Estimated Value box shows its own net-of-refurb breakdown once there's
-// something in the Condition & Maintenance panel to subtract — fills the
-// box (which is stretched to match Condition & Maintenance's height
-// anyway) and ties the two figures together rather than leaving it blank.
+// The headline number in the Estimated Value box is always the real net
+// value — what's actually being offered — never the pre-refurb gross
+// figure, so there's only ever one number a customer could read as "the"
+// value. The gross appraisal (still editable) and the refurb deduction
+// only show as smaller supporting detail underneath.
 function updateEstBreakdown(){
-  const refurb = [...document.querySelectorAll('.cond-cost')].reduce((sum, el) => sum + parseMoney(el.value), 0);
-  const gross = parseMoney(document.getElementById('estVal').value);
+  const refurb = currentRefurbTotal();
+  document.getElementById('estNetVal').textContent = formatMoney(estimatedNetValue());
   document.getElementById('estRefurb').textContent = '−' + formatMoney(refurb);
-  document.getElementById('estNetVal').textContent = formatMoney(gross - refurb);
-  document.getElementById('estBreakdown').style.display = refurb > 0 ? '' : 'none';
+  document.getElementById('estRefurbRow').style.display = refurb > 0 ? '' : 'none';
+  document.getElementById('estSub').textContent = refurb > 0
+    ? 'of your vehicle today, after estimated refurb'
+    : 'of your vehicle today';
+  updateEquity();
 }
 document.getElementById('estVal').addEventListener('input', updateEstBreakdown);
 updateEstBreakdown();
