@@ -361,7 +361,9 @@
           <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Continue with your agreement</li>
           <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Keep making your monthly payments</li>
           <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>No need to change if you're happy</li>
-          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Own the vehicle at the end of the agreement</li>
+          <li class="non-pcp-only"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Own the vehicle at the end of the agreement</li>
+          <li class="pcp-only"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Pay your Guaranteed Future Value in full to own it outright</li>
+          <li class="pcp-only"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Or refinance the balance into new monthly payments (subject to status)</li>
         </ul>
       </div>
       <div class="strap">Keep doing what works for you.</div>
@@ -480,7 +482,10 @@ updateEquity();
 const agreementType = document.getElementById('agreementType');
 const gfvStat = document.getElementById('gfvStat');
 function updateAgreementType(){
-  gfvStat.style.display = agreementType.value === 'pcp' ? '' : 'none';
+  const isPCP = agreementType.value === 'pcp';
+  gfvStat.style.display = isPCP ? '' : 'none';
+  document.querySelectorAll('.pcp-only').forEach(el => el.style.display = isPCP ? '' : 'none');
+  document.querySelectorAll('.non-pcp-only').forEach(el => el.style.display = isPCP ? 'none' : '');
 }
 agreementType.addEventListener('change', updateAgreementType);
 updateAgreementType();
