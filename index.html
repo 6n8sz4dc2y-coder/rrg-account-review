@@ -105,6 +105,7 @@
     width:24px; text-align:center; border:none; background:transparent; padding:0;
     font-size:inherit; font-weight:700; color:var(--slate);
   }
+  .stat .sub-input-wide{ width:44px; text-align:left; }
   .stat.blue{ --accent:#3E7CC9; } .stat.blue .val{ color:#2A5C9B; }
   .stat.amber{ --accent:var(--amber); } .stat.amber .val{ color:#93691E; }
   .stat.teal{ --accent:var(--teal); } .stat.teal .val{ color:#125b56; }
@@ -285,7 +286,7 @@
       </div>
       <div class="lbl">MONTHLY PAYMENTS</div>
       <input class="val" id="payCount" type="text" value="18">
-      <div class="sub">payments remaining</div>
+      <div class="sub">£<input type="text" id="payAmount" value="389.50" class="sub-input sub-input-wide">&nbsp;per month</div>
     </div>
     <div class="stat navy" id="gfvStat">
       <div class="icon">
@@ -293,7 +294,7 @@
       </div>
       <div class="lbl">GUARANTEED VALUE</div>
       <input class="val" id="gfvAmount" type="text" value="£9,250.00">
-      <div class="sub">due after&nbsp;<input type="text" id="gfvPayments" value="36" class="sub-input">&nbsp;payments</div>
+      <div class="sub">due after&nbsp;<span id="gfvPaymentsDisplay">18</span>&nbsp;payments</div>
     </div>
     <div class="stat amber">
       <div class="icon">
@@ -474,6 +475,16 @@ document.getElementById('settleVal').addEventListener('input', updateEquity);
 document.getElementById('estVal').addEventListener('input', updateEquity);
 updateEquity();
 
+// The Guaranteed Future Value falls due once the same payments shown in the
+// Monthly Payments box have been made — so it reads that figure directly
+// rather than staff having to enter the payment count twice.
+const payCount = document.getElementById('payCount');
+function updateGfvPayments(){
+  document.getElementById('gfvPaymentsDisplay').textContent = payCount.value || '0';
+}
+payCount.addEventListener('input', updateGfvPayments);
+updateGfvPayments();
+
 // ---- Agreement type ----
 // Guaranteed Future Value only applies to PCP agreements (the balloon payment
 // due at the end if the customer wants to own the car outright).
@@ -508,6 +519,7 @@ function blankFields(){
   document.getElementById('payCount').value = '';
   setReviewDateToToday();
   updateEquity();
+  updateGfvPayments();
 }
 
 document.getElementById('printBtn').addEventListener('click', () => window.print());
