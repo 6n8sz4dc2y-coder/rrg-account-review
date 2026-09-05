@@ -425,8 +425,14 @@
     </div>
     <div class="right" id="equityRight">
       <div class="heading">WHAT DOES THIS MEAN?</div>
-      Based on today's figures, your vehicle could be worth more than the amount needed to settle your agreement.<br><br>
-      <b>This difference – <span id="equityInline">£2,550.00</span> – may be available towards your next car.</b>
+      <div id="equityExplainPositive">
+        Based on today's figures, your vehicle could be worth more than the amount needed to settle your agreement.<br><br>
+        <b>This difference – <span id="equityInline">£2,550.00</span> – may be available towards your next car.</b>
+      </div>
+      <div id="equityExplainNegative" style="display:none;">
+        Based on today's figures, the amount needed to settle your agreement is currently more than your vehicle is worth.<br><br>
+        <b>This is common on newer agreements and doesn't stop you exploring your options below.</b>
+      </div>
     </div>
     <div class="left pre-msg" id="equityPreMsg" style="display:none;">
       <div class="icon">
@@ -585,6 +591,10 @@ function updateEquity(){
   note.textContent = equity >= 0
     ? "The estimated value is higher than your settlement figure."
     : "The settlement figure is currently higher than the estimated value.";
+  // A negative figure can't be "available towards your next car" — swap to
+  // an explanation that doesn't imply a deposit that doesn't exist.
+  document.getElementById('equityExplainPositive').style.display = equity >= 0 ? '' : 'none';
+  document.getElementById('equityExplainNegative').style.display = equity >= 0 ? 'none' : '';
 }
 document.getElementById('settleVal').addEventListener('input', updateEquity);
 updateEquity();
